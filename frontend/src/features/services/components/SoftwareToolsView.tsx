@@ -119,6 +119,12 @@ export function SoftwareToolsView() {
                       <strong className="ds-software-price">{item.price}</strong>
                     </div>
                     <span className="ds-software-card-caption">Available now · PKR</span>
+                    <Link
+                      className="ds-software-buy"
+                      href={`/services/software-tools/checkout?category=${encodeURIComponent(category.name)}&product=${encodeURIComponent(item.product)}&plan=${encodeURIComponent(item.plan)}&price=${encodeURIComponent(item.price)}`}
+                    >
+                      Buy now <ArrowUpRight size={15} aria-hidden="true" />
+                    </Link>
                   </article>
                 ))}
               </div>

@@ -53,6 +53,10 @@
 .ds-software-category--green .ds-software-savings { background: #e4f7f0; color: #087b5e; }
 .ds-software-category--orange .ds-software-savings { background: #fff0e7; color: #b84a18; }
 .ds-software-card-caption { margin-top: 12px; color: #8aa0b4; font-size: 11px; }
+.ds-software-buy { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 11px 14px; border-radius: 10px; background: #0b1b31; color: #fff; font-size: 13px; font-weight: 800; transition: background 180ms ease, transform 180ms ease; }
+.ds-software-buy:hover { background: #0b73c7; transform: translateY(-2px); }
+.ds-software-category--green .ds-software-buy:hover { background: #087b5e; }
+.ds-software-category--orange .ds-software-buy:hover { background: #b84a18; }
 .ds-software-note { display: flex; justify-content: space-between; align-items: center; gap: 30px; width: min(1180px, calc(100% - 48px)); margin: 92px auto 0; padding: 42px 48px; background: linear-gradient(115deg, #061b3b, #0b4f91); color: #fff; }
 .ds-software-note h2 { margin-top: 10px; color: #fff; font-family: var(--font-nunito-sans), Arial, sans-serif; font-size: clamp(28px, 3.6vw, 44px); letter-spacing: -.05em; }
 .ds-software-note .ds-service-primary { flex: 0 0 auto; background: #55b4ff; color: #07162a; }
