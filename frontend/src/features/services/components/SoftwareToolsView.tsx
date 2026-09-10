@@ -7,6 +7,35 @@ import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
 import { ServicePageHeader } from "./ServicePageHeader";
 import { softwareToolCategories } from "@/src/features/services/data/softwareToolsData";
 
+function ToolLogo({ slug, label }: { slug: string; label: string }) {
+  if (slug === "openai") {
+    return (
+      <span className="ds-tool-mark ds-tool-mark--openai" aria-label={`${label} logo`}>
+        <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
+          <path d="M24 7.5a8.3 8.3 0 0 1 14.2 7.2 8.3 8.3 0 0 1-1.7 15.8 8.3 8.3 0 0 1-13.5 8.6 8.3 8.3 0 0 1-14.2-7.2 8.3 8.3 0 0 1 1.7-15.8A8.3 8.3 0 0 1 24 7.5Z" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round" />
+          <path d="m24 13.5 7.3 4.2v8.5L24 30.5l-7.3-4.3v-8.5L24 13.5Z" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
+        </svg>
+        <small>GPT</small>
+      </span>
+    );
+  }
+
+  const marks: Record<string, { symbol: string; className: string }> = {
+    anthropic: { symbol: "✦", className: "ds-tool-mark--claude" },
+    cursor: { symbol: "⌁", className: "ds-tool-mark--cursor" },
+    canva: { symbol: "C", className: "ds-tool-mark--canva" },
+    capcut: { symbol: "剪", className: "ds-tool-mark--capcut" },
+    googlegemini: { symbol: "✦", className: "ds-tool-mark--gemini" },
+  };
+  const mark = marks[slug] ?? { symbol: label.slice(0, 1), className: "" };
+
+  return (
+    <span className={`ds-tool-mark ${mark.className}`} aria-label={`${label} logo`}>
+      <span aria-hidden="true">{mark.symbol}</span>
+    </span>
+  );
+}
+
 export function SoftwareToolsView() {
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-software-reveal]"));
@@ -76,27 +105,25 @@ export function SoftwareToolsView() {
                 <p>{category.description}</p>
               </div>
 
-              <div className="ds-software-table" role="table" aria-label={`${category.name} plans`}>
-                <div className="ds-software-table-header" role="row">
-                  <span aria-hidden="true" />
-                  <span role="columnheader">Product / plan</span>
-                  <span role="columnheader">Official price</span>
-                  <span role="columnheader">Our price</span>
-                  <span role="columnheader">You save</span>
-                </div>
+              <div className="ds-software-cards" role="list" aria-label={`${category.name} plans`}>
                 {category.plans.map((item) => (
-                  <div className="ds-software-table-row" role="row" key={`${item.product}-${item.plan}`}>
-                    <div className="ds-software-logo" role="cell">
-                      <img src={`https://cdn.simpleicons.org/${item.logoSlug}/0b1b31`} alt={`${item.product} logo`} loading="lazy" />
+                  <article className="ds-software-card" role="listitem" key={`${item.product}-${item.plan}`}>
+                    <div className="ds-software-card-top">
+                      <div className="ds-software-logo">
+                        <ToolLogo slug={item.logoSlug} label={item.product} />
+                      </div>
+                      <span className="ds-software-savings">{item.savings}</span>
                     </div>
-                    <div className="ds-software-product" role="cell">
+                    <div className="ds-software-product">
                       <strong>{item.product}</strong>
                       <span>{item.plan}</span>
                     </div>
-                    <span className="ds-software-official" role="cell">{item.officialPrice}</span>
-                    <strong className="ds-software-price" role="cell">{item.price}</strong>
-                    <span className="ds-software-savings" role="cell">{item.savings}</span>
-                  </div>
+                    <div className="ds-software-card-pricing">
+                      <span className="ds-software-official">{item.officialPrice}</span>
+                      <strong className="ds-software-price">{item.price}</strong>
+                    </div>
+                    <span className="ds-software-card-caption">Available now · PKR</span>
+                  </article>
                 ))}
               </div>
             </article>
