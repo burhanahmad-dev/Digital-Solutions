@@ -75,7 +75,7 @@ export const serviceMenuGroups: readonly ServiceGroup[] = [
     title: "Software & AI Tools",
     eyebrow: "Curated access",
     description: "Flexible access to essential AI, creative, and productivity tools with clear PKR pricing.",
-    image: "/assets/images/home/hero-integrations.jpg",
+    image: "/assets/images/home/workflow-team.jpg",
     imagePosition: "center center",
     services: [
       "ChatGPT Plus Plans",
