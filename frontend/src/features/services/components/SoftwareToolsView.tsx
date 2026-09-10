@@ -8,30 +8,25 @@ import { ServicePageHeader } from "./ServicePageHeader";
 import { softwareToolCategories } from "@/src/features/services/data/softwareToolsData";
 
 function ToolLogo({ slug, label }: { slug: string; label: string }) {
-  if (slug === "openai") {
+  const logoSources: Record<string, string> = {
+    openai: "/assets/logos/tools/openai.svg",
+    anthropic: "/assets/logos/tools/claude.png",
+    cursor: "/assets/logos/tools/cursor.svg",
+    canva: "/assets/logos/tools/canva.svg",
+    googlegemini: "/assets/logos/tools/googlegemini.svg",
+  };
+
+  if (logoSources[slug]) {
     return (
-      <span className="ds-tool-mark ds-tool-mark--openai" aria-label={`${label} logo`}>
-        <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-          <path d="M24 7.5a8.3 8.3 0 0 1 14.2 7.2 8.3 8.3 0 0 1-1.7 15.8 8.3 8.3 0 0 1-13.5 8.6 8.3 8.3 0 0 1-14.2-7.2 8.3 8.3 0 0 1 1.7-15.8A8.3 8.3 0 0 1 24 7.5Z" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round" />
-          <path d="m24 13.5 7.3 4.2v8.5L24 30.5l-7.3-4.3v-8.5L24 13.5Z" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-        </svg>
-        <small>GPT</small>
+      <span className={`ds-tool-mark ds-tool-mark--${slug}`}>
+        <img src={logoSources[slug]} alt={`${label} logo`} />
       </span>
     );
   }
 
-  const marks: Record<string, { symbol: string; className: string }> = {
-    anthropic: { symbol: "✦", className: "ds-tool-mark--claude" },
-    cursor: { symbol: "⌁", className: "ds-tool-mark--cursor" },
-    canva: { symbol: "C", className: "ds-tool-mark--canva" },
-    capcut: { symbol: "剪", className: "ds-tool-mark--capcut" },
-    googlegemini: { symbol: "✦", className: "ds-tool-mark--gemini" },
-  };
-  const mark = marks[slug] ?? { symbol: label.slice(0, 1), className: "" };
-
   return (
-    <span className={`ds-tool-mark ${mark.className}`} aria-label={`${label} logo`}>
-      <span aria-hidden="true">{mark.symbol}</span>
+    <span className="ds-tool-mark ds-tool-mark--fallback" aria-label={`${label} logo`}>
+      <span aria-hidden="true">{label.slice(0, 2).toUpperCase()}</span>
     </span>
   );
 }
