@@ -13,6 +13,7 @@ function ToolLogo({ slug, label }: { slug: string; label: string }) {
     anthropic: "/assets/logos/tools/claude.png",
     cursor: "/assets/logos/tools/cursor.svg",
     canva: "/assets/logos/tools/canva.svg",
+    capcut: "/assets/logos/tools/capcut.png",
     googlegemini: "/assets/logos/tools/googlegemini.svg",
   };
 
