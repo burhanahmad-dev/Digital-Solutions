@@ -211,6 +211,15 @@ const featuredProjects = [
   },
 ];
 
+const softwareToolLogoTiles = [
+  { name: "ChatGPT", src: "/assets/logos/tools/openai.svg", className: "is-openai" },
+  { name: "Claude", src: "/assets/logos/tools/claude.png", className: "is-claude" },
+  { name: "Cursor", src: "/assets/logos/tools/cursor.svg", className: "is-cursor" },
+  { name: "Canva", src: "/assets/logos/tools/canva.svg", className: "is-canva" },
+  { name: "CapCut", src: "/assets/logos/tools/capcut.png", className: "is-capcut" },
+  { name: "Gemini", src: "/assets/logos/tools/googlegemini.svg", className: "is-gemini" },
+];
+
 export default function HomePage() {
   const [activeHero, setActiveHero] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -931,9 +940,23 @@ export default function HomePage() {
               {serviceMenuGroups.map((group, index) => (
                 <article className="vx-service-card-main" style={{ animationDelay: `${index * 90}ms` }} key={group.id}>
                   <div>
-                    <div className="vx-service-card-image">
-                      <img src={group.image} alt={group.title} style={{ objectPosition: group.imagePosition }} />
-                    </div>
+                    {group.id === "software-tools" ? (
+                      <div className="vx-service-card-image vx-service-tools-image" aria-label="ChatGPT, Claude, Cursor, Canva, CapCut, and Gemini tools">
+                        <div className="vx-service-tools-image-glow" aria-hidden="true" />
+                        <div className="vx-service-tools-logo-grid">
+                          {softwareToolLogoTiles.map((tool) => (
+                            <span className={`vx-service-tools-logo ${tool.className}`} key={tool.name} title={tool.name}>
+                              <img src={tool.src} alt="" />
+                            </span>
+                          ))}
+                        </div>
+                        <span className="vx-service-tools-image-label">AI · DESIGN · VIDEO · CODE</span>
+                      </div>
+                    ) : (
+                      <div className="vx-service-card-image">
+                        <img src={group.image} alt={group.title} style={{ objectPosition: group.imagePosition }} />
+                      </div>
+                    )}
                     <span className="vx-service-card-eyebrow">{group.eyebrow}</span>
                     <h3>{group.title}</h3>
                     <p>{group.description}</p>
