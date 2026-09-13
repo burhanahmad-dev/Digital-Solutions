@@ -3036,6 +3036,51 @@ button:focus-visible {
   transform: scale(1.04);
 }
 
+.vx-service-tools-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(145deg, #f8fbff 0%, #eef6ff 100%);
+  border: 1px solid #d9e9f7;
+}
+
+.vx-service-tools-image-glow {
+  display: none;
+}
+
+.vx-service-tools-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 48px);
+  justify-content: center;
+  gap: 10px;
+}
+
+.vx-service-tools-logo {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid #d8e6f2;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(35, 91, 135, .10);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.vx-service-tools-logo img { width: 29px; height: 29px; object-fit: contain; }
+.vx-service-tools-logo.is-claude { overflow: hidden; background: #ee7951; }
+.vx-service-tools-logo.is-claude img { width: 48px; height: 48px; border-radius: 12px; }
+.vx-service-tools-logo.is-capcut { overflow: hidden; background: #fff; }
+.vx-service-tools-logo.is-capcut img { width: 48px; height: 48px; }
+.vx-service-tools-logo.is-canva {
+  background: linear-gradient(135deg, #00c4cc 0%, #7d2ae8 58%, #ff7262 100%);
+  border-color: transparent;
+}
+.vx-service-tools-logo.is-canva img { filter: brightness(0) invert(1); }
+.vx-service-tools-logo.is-gemini { background: linear-gradient(135deg, #ffffff, #eef3ff); }
+.vx-service-card-main:hover .vx-service-tools-logo { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(35, 91, 135, .18); }
+.vx-service-tools-image-label { margin-top: 17px; color: #66809a; font-size: 9px; font-weight: 850; letter-spacing: .18em; text-align: center; }
+
 .vx-service-card-eyebrow {
   color: var(--vx-blue);
   font-size: 10px;
