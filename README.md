@@ -1,6 +1,6 @@
 # Digital Solutions
 
-Professional AI automation agency website for Digital Solutions, built with
+Professional agency website for Digital Solutions, built with
 Next-compatible React, TypeScript, and Vinext.
 
 ## Prerequisites
@@ -22,96 +22,41 @@ This starter does not use `wrangler.jsonc`.
 ```text
 frontend/app/                     Route entry points and global metadata
 frontend/src/components/          Shared reusable UI
-frontend/src/features/home/                Home page composition, data, and styles
-frontend/src/features/services/             Service navigation, data, and styles
-frontend/src/features/contact/              Booking and contact experience
+frontend/src/features/home/       Home page composition, data, and styles
+frontend/src/features/services/   Service navigation, data, and styles
+frontend/src/features/contact/    Booking and contact experience
+frontend/src/features/blog/       Blog data and styles
+frontend/src/features/reviews/    Review data and styles
 frontend/public/assets/images/home/         Home page photography
 frontend/public/assets/images/services/     Service menu photography
-tests/                             Render and structure checks
 backend/worker/                   Cloudflare/Vinext worker entry point
-backend/db/                       Database client and schema
-backend/drizzle/                  Generated database migrations
 build/                            Sites build integration
+tests/                            Render and structure checks
 ```
 
 ## Architecture
 
 - Route files remain intentionally thin.
 - Frontend routes and browser code live under `frontend`.
-- Backend runtime and database code live under `backend`.
+- The backend contains only the Cloudflare worker runtime required to serve the site.
 - Feature-specific content, UI, and styling live together under `frontend/src/features`.
 - Reusable components live under `frontend/src/components`.
 - Public assets are grouped by the feature that owns them.
 - Service taxonomy is centralized so navigation and search share one source.
 
-## Workspace Auth Headers
+## Data and authentication
 
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+The current site is content-led and does not use a database. Add a database only
+when the site needs durable, app-owned data such as form submissions, customer
+accounts, bookings, orders, or a CMS. For the current contact and booking links,
+an external service is the simpler option.
 
 ## Useful Commands
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+- `npm test`: build the site and verify its rendered HTML
 
 ## Learn More
 
 - [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)

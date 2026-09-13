@@ -19,7 +19,6 @@ import { BrandBar } from "@/src/components/brand/BrandBar";
 import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
 import { clientReviews, heroImages } from "@/src/features/home/data/content";
 import { getServiceItemHref, serviceMenuGroups } from "@/src/features/services/data/services";
-import "@/src/features/blog/styles/blog.css";
 
 type SiteSearchItem = {
   id: string;
@@ -166,48 +165,17 @@ const processSteps = [
 
 const featuredProjects = [
   {
-    id: "proj-1",
-    title: "AI Operations Automation",
-    category: "AI AUTOMATION",
-    client: "Operations workflow",
-    description: "An intelligent automation system that handles repetitive operational work, routes requests, and gives the team a clear view of every task.",
-    image: "/assets/images/home/hero-workflow.jpg",
-    stats: "85% Less Manual Work",
-    tags: ["AI Agents", "Workflow Automation", "Integrations"],
-    accent: "#38bdf8",
-  },
-  {
-    id: "proj-2",
-    title: "High-Performance Business Website",
-    category: "WEB DEVELOPMENT",
-    client: "Digital growth platform",
-    description: "A fast, modern website designed to present the brand clearly, turn visitors into qualified enquiries, and scale with the business.",
-    image: "/assets/images/home/hero-integrations.jpg",
-    stats: "Built for Conversion",
-    tags: ["Next.js", "UI/UX Design", "SEO Ready"],
-    accent: "#0ea5e9",
-  },
-  {
-    id: "proj-3",
-    title: "High-ROAS E-Commerce Engine",
-    category: "MARKETING & SEO",
-    client: "Lumen & Co. Growth",
-    description: "Integrated Meta & Google Ads conversion funnel paired with technical SEO architecture that scaled monthly revenue by 4.2×.",
-    image: "/assets/images/home/hero-process.jpg",
-    stats: "4.2× ROAS Revenue Lift",
-    tags: ["Meta Ads", "Google Ads", "Organic SEO"],
-    accent: "#60a5fa",
-  },
-  {
-    id: "proj-4",
-    title: "Healthcare SaaS UI/UX Ecosystem",
-    category: "PRODUCT DESIGN",
-    client: "CarePulse Health",
-    description: "Enterprise Figma design system and accessible patient telemetry dashboard boosting user conversion and retention by 45%.",
-    image: "/assets/images/home/hero-customer.jpg",
-    stats: "+45% User Conversion",
-    tags: ["Figma Systems", "UI/UX Architecture", "Design Tokens"],
-    accent: "#818cf8",
+    id: "alooverse",
+    title: "Alooverse",
+    category: "FOOD & HOSPITALITY",
+    client: "H Block DHA, Lahore",
+    description: "A high-energy digital ordering experience for Belgian hand-cut fries, loaded creations, crazy dips, and thick-patty burgers.",
+    image: "https://alooverse.alooverse.workers.dev/hero/potato-landed.webp",
+    logo: "https://alooverse.alooverse.workers.dev/brand/mascot-profile-hd.webp",
+    stats: "Live ordering experience",
+    tags: ["Brand Experience", "Digital Menu", "E-commerce"],
+    accent: "#e88911",
+    href: "https://alooverse.alooverse.workers.dev/",
   },
 ];
 
@@ -987,15 +955,19 @@ export default function HomePage() {
             <div className="vx-projects-heading">
               <span>FEATURED CASE STUDIES</span>
               <h2 id="projects-title">OUR PROJECTS</h2>
-              <p>Explore how we engineer autonomous AI systems, high-performance web platforms, and growth engines for industry leaders.</p>
+              <p>A live hospitality brand experience designed to make its menu, personality, and ordering journey unmistakable.</p>
             </div>
 
             <div className="vx-projects-grid">
-              {featuredProjects.slice(0, 2).map((project, index) => (
+              {featuredProjects.map((project, index) => (
                 <article className="vx-project-card" style={{ animationDelay: `${index * 110}ms` }} key={project.id}>
                   <div className="vx-project-cover">
                     <img src={project.image} alt={project.title} />
                     <span className="vx-project-badge">{project.category}</span>
+                    <div className="vx-project-brand">
+                      <img src={project.logo} alt="Alooverse mascot" />
+                      <span>ALOOVERSE</span>
+                    </div>
                   </div>
                   <div className="vx-project-body">
                     <span className="vx-project-client">{project.client}</span>
@@ -1009,6 +981,9 @@ export default function HomePage() {
                         <span className="vx-project-tag" key={tag}>{tag}</span>
                       ))}
                     </div>
+                    <a className="vx-project-link" href={project.href} target="_blank" rel="noreferrer">
+                      Visit live site <ArrowUpRight size={15} aria-hidden="true" />
+                    </a>
                   </div>
                 </article>
               ))}

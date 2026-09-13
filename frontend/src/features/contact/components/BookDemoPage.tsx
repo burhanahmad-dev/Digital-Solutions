@@ -5,8 +5,9 @@ import { ServicePageHeader } from "@/src/features/services/components/ServicePag
 import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
 import "@/src/features/contact/styles/contact.css";
 
-const ADMIN_EMAIL = "hello@digitalsolutions.ai";
-const ADMIN_PHONE = "+14087094469";
+const ADMIN_EMAIL = "dsolutions555@gmail.com";
+const ADMIN_PHONE = "+923096548143";
+const SECONDARY_PHONE = "+923293269494";
 
 type BookingForm = {
   name: string;
@@ -137,6 +138,7 @@ export default function BookDemoPage() {
             <span>Prefer a direct conversation?</span>
             <a href={`mailto:${ADMIN_EMAIL}`}>{ADMIN_EMAIL}</a>
             <a href={`tel:${ADMIN_PHONE}`}>{ADMIN_PHONE}</a>
+            <a href={`tel:${SECONDARY_PHONE}`}>{SECONDARY_PHONE}</a>
           </div>
         </section>
 

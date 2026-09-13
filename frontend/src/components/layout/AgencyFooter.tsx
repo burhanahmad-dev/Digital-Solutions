@@ -19,11 +19,14 @@ export function AgencyFooter() {
             <h3 className="main-text">Contact us</h3>
 
             <div className="vx-footer-contact-info">
-              <a href="mailto:hello@digitalsolutions.ai" className="vx-footer-contact-link">
-                <Mail size={16} /> hello@digitalsolutions.ai
+              <a href="mailto:dsolutions555@gmail.com" className="vx-footer-contact-link">
+                <Mail size={16} /> dsolutions555@gmail.com
               </a>
-              <a href="tel:+14087094469" className="vx-footer-contact-link">
-                <Phone size={16} /> +1 408-709-4469
+              <a href="tel:+923096548143" className="vx-footer-contact-link">
+                <Phone size={16} /> +92 309 6548143
+              </a>
+              <a href="tel:+923293269494" className="vx-footer-contact-link">
+                <Phone size={16} /> +92 329 3269494
               </a>
             </div>
 
