@@ -1,11 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { MouseEvent, useState } from "react";
 import { Linkedin, Instagram, Facebook, Globe2, Mail, Phone, ArrowUpRight } from "lucide-react";
 import { Brand } from "@/src/components/brand/Brand";
+import { claimMailSendPermission } from "@/src/lib/mailRateLimit";
 import "@/src/features/home/styles/footer.css";
 
 export function AgencyFooter() {
+  const [mailLimitMessage, setMailLimitMessage] = useState("");
+
+  const handleEmailClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    const permission = claimMailSendPermission();
+    if (!permission.allowed) {
+      event.preventDefault();
+      setMailLimitMessage(permission.message);
+    }
+  };
+
   return (
     <footer className="vx-agency-footer" id="contact">
       <div className="vx-agency-footer-inner">
@@ -19,7 +31,7 @@ export function AgencyFooter() {
             <h3 className="main-text">Contact us</h3>
 
             <div className="vx-footer-contact-info">
-              <a href="mailto:dsolutions555@gmail.com" className="vx-footer-contact-link">
+              <a href="mailto:dsolutions555@gmail.com" className="vx-footer-contact-link" onClick={handleEmailClick}>
                 <Mail size={16} /> dsolutions555@gmail.com
               </a>
               <a href="tel:+923096548143" className="vx-footer-contact-link">
@@ -28,6 +40,7 @@ export function AgencyFooter() {
               <a href="tel:+923293269494" className="vx-footer-contact-link">
                 <Phone size={16} /> +92 329 3269494
               </a>
+              {mailLimitMessage && <p role="status">{mailLimitMessage}</p>}
             </div>
 
             <div className="vx-footer-social-icons">

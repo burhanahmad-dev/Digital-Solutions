@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Check, Mail, MessageCircle, Upload, Wallet } from "lucide-react";
 import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
+import { claimMailSendPermission } from "@/src/lib/mailRateLimit";
 import { ServicePageHeader } from "./ServicePageHeader";
 
 const ADMIN_EMAIL = "dsolutions555@gmail.com";
@@ -121,6 +122,12 @@ export default function SoftwareCheckoutPage() {
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return;
+    }
+
+    const permission = claimMailSendPermission();
+    if (!permission.allowed) {
+      setStatus(permission.message);
+      return;
     }
 
     window.location.assign(`mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(`Payment proof — ${order.product || "Software tool"}`)}&body=${encodeURIComponent(`${message}\n\nPlease attach your payment screenshot before sending.`)}`);

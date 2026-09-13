@@ -1,8 +1,9 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, MouseEvent, useState } from "react";
 import { ServicePageHeader } from "@/src/features/services/components/ServicePageHeader";
 import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
+import { claimMailSendPermission } from "@/src/lib/mailRateLimit";
 import "@/src/features/contact/styles/contact.css";
 
 const ADMIN_EMAIL = "dsolutions555@gmail.com";
@@ -73,6 +74,14 @@ export default function BookDemoPage() {
     setSubmitted(false);
   };
 
+  const handleDirectEmailClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    const permission = claimMailSendPermission();
+    if (!permission.allowed) {
+      event.preventDefault();
+      setError(permission.message);
+    }
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!form.name.trim()) {
@@ -119,7 +128,13 @@ export default function BookDemoPage() {
       form.message.trim() || "Not provided",
     ].join("\n");
 
-    window.location.href = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const permission = claimMailSendPermission();
+    if (!permission.allowed) {
+      setError(permission.message);
+      return;
+    }
+
+    window.location.assign(`mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
     setSubmitted(true);
   };
 
@@ -136,7 +151,7 @@ export default function BookDemoPage() {
           </p>
           <div className="ds-booking-contact-note">
             <span>Prefer a direct conversation?</span>
-            <a href={`mailto:${ADMIN_EMAIL}`}>{ADMIN_EMAIL}</a>
+            <a href={`mailto:${ADMIN_EMAIL}`} onClick={handleDirectEmailClick}>{ADMIN_EMAIL}</a>
             <a href={`tel:${ADMIN_PHONE}`}>{ADMIN_PHONE}</a>
             <a href={`tel:${SECONDARY_PHONE}`}>{SECONDARY_PHONE}</a>
           </div>
