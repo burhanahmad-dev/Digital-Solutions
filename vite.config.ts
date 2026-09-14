@@ -11,6 +11,7 @@ process.on("uncaughtException", (err: unknown) => {
   console.error(err);
 });
 
+import path from "node:path";
 import vinext from "vinext";
 import { defineConfig, type PluginOption } from "vite";
 import hostingConfig from "./.openai/hosting.json";

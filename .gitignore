@@ -40,3 +40,6 @@ yarn-error.log*
 /outputs/
 /work/
 *.tsbuildinfo
+
+# Cloudflare Worker local secrets — never commit
+.dev.vars

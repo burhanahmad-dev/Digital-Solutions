@@ -96,7 +96,7 @@ export default function SoftwareCheckoutPage() {
       return;
     }
 
-    if (!proofFile.type.startsWith("image/") || proofFile.size > 10 * 1024 * 1024) {
+    if (!proofFile || !proofFile.type.startsWith("image/") || proofFile.size > 10 * 1024 * 1024) {
       setStatus("Please upload a valid PNG, JPG, or WebP screenshot under 10 MB.");
       return;
     }
@@ -111,11 +111,11 @@ export default function SoftwareCheckoutPage() {
     const shareData: ShareData = {
       title: `Payment proof — ${order.product || "Software tool"}`,
       text: message,
-      files: [proofFile],
+      files: [proofFile as File],
     };
 
     try {
-      if (navigator.share && navigator.canShare?.({ files: [proofFile] })) {
+      if (navigator.share && navigator.canShare?.({ files: [proofFile as File] })) {
         await navigator.share(shareData);
         setStatus("Your payment proof was shared. We’ll verify it and send access details by email.");
         return;

@@ -1,9 +1,8 @@
 "use client";
 
-import { FormEvent, MouseEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { ServicePageHeader } from "@/src/features/services/components/ServicePageHeader";
 import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
-import { claimMailSendPermission } from "@/src/lib/mailRateLimit";
 import "@/src/features/contact/styles/contact.css";
 
 const ADMIN_EMAIL = "dsolutions555@gmail.com";
@@ -67,6 +66,7 @@ export default function BookDemoPage() {
   const [form, setForm] = useState<BookingForm>(initialForm);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const updateField = (field: keyof BookingForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -74,15 +74,8 @@ export default function BookDemoPage() {
     setSubmitted(false);
   };
 
-  const handleDirectEmailClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    const permission = claimMailSendPermission();
-    if (!permission.allowed) {
-      event.preventDefault();
-      setError(permission.message);
-    }
-  };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!form.name.trim()) {
       setError("Please enter your name.");
@@ -113,29 +106,38 @@ export default function BookDemoPage() {
       return;
     }
 
-    const subject = `Demo request from ${form.name.trim()}`;
-    const body = [
-      "New Digital Solutions demo request",
-      "",
-      `Name: ${form.name.trim()}`,
-      `Email: ${form.email.trim() || "Not provided"}`,
-      `Phone: ${form.phone.trim() || "Not provided"}`,
-      `Company: ${form.company.trim()}`,
-      `Service: ${form.service}`,
-      `Focus area: ${form.customService.trim() || form.subService}`,
-      "",
-      "Project details:",
-      form.message.trim() || "Not provided",
-    ].join("\n");
+    setLoading(true);
+    setError("");
 
-    const permission = claimMailSendPermission();
-    if (!permission.allowed) {
-      setError(permission.message);
-      return;
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          company: form.company.trim(),
+          service: form.service,
+          subService: form.customService.trim() || form.subService,
+          message: form.message.trim(),
+        }),
+      });
+
+      const result = await response.json() as { success: boolean; error?: string };
+
+      if (!response.ok || !result.success) {
+        setError(result.error ?? "Something went wrong. Please try again or email us directly.");
+        return;
+      }
+
+      setSubmitted(true);
+      setForm(initialForm);
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
     }
-
-    window.location.assign(`mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-    setSubmitted(true);
   };
 
   return (
@@ -151,7 +153,7 @@ export default function BookDemoPage() {
           </p>
           <div className="ds-booking-contact-note">
             <span>Prefer a direct conversation?</span>
-            <a href={`mailto:${ADMIN_EMAIL}`} onClick={handleDirectEmailClick}>{ADMIN_EMAIL}</a>
+            <a href={`mailto:${ADMIN_EMAIL}`}>{ADMIN_EMAIL}</a>
             <a href={`tel:${ADMIN_PHONE}`}>{ADMIN_PHONE}</a>
             <a href={`tel:${SECONDARY_PHONE}`}>{SECONDARY_PHONE}</a>
           </div>
@@ -221,9 +223,11 @@ export default function BookDemoPage() {
             </label>
 
             {error && <p className="ds-booking-form-message ds-booking-form-message--error" role="alert">{error}</p>}
-            {submitted && <p className="ds-booking-form-message ds-booking-form-message--success" role="status">Your email app is opening with the request ready to send.</p>}
+            {submitted && <p className="ds-booking-form-message ds-booking-form-message--success" role="status">✓ Request received! We will review your details and get back to you shortly.</p>}
 
-            <button type="submit" className="ds-booking-submit">Send request <span aria-hidden="true">↗</span></button>
+            <button type="submit" className="ds-booking-submit" disabled={loading}>
+              {loading ? "Sending…" : <>Send request <span aria-hidden="true">↗</span></>}
+            </button>
             <p className="ds-booking-privacy">Your details are used only to respond to this request.</p>
           </form>
         </section>
