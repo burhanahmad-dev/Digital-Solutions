@@ -715,6 +715,7 @@ export default function HomePage() {
                     className={`vx-process-step-node${idx === activeProcessStep ? " is-active" : ""}${idx < activeProcessStep ? " is-completed" : ""}`}
                     onClick={() => setActiveProcessStep(idx)}
                     aria-label={`Step ${step.step}: ${step.title}`}
+                    aria-current={idx === activeProcessStep ? "step" : undefined}
                   >
                     <div className="vx-process-circle">
                       <span>{step.step}</span>
@@ -874,7 +875,7 @@ export default function HomePage() {
                 </button>
 
                 <div className="vx-reviews-progress-bar-wrap">
-                  <span className="vx-reviews-counter">
+                  <span className="vx-reviews-counter" aria-live="polite">
                     {String((activeReviewPage + 1) * 3).padStart(2, "0")} / {String(clientReviews.length).padStart(2, "0")}
                   </span>
                   <div className="vx-reviews-progress-track">

@@ -358,6 +358,7 @@
 .ds-store-upload { border-color: #9fc5e0; background: rgba(255,255,255,.8); color: #2773a6; box-shadow: none; }
 .ds-store-upload:hover { border-color: #1688db; background: #f6fbff; }
 .ds-store-upload small, .ds-store-verification-note { color: #8194a5; }
+.ds-store-verification-status { margin-top: 11px; padding: 10px 12px; border: 1px solid #b9d9ef; border-radius: 10px; background: #edf8ff; color: #176da8; font-size: 10px; font-weight: 750; line-height: 1.45; text-align: center; }
 .ds-store-verify-button { background: #1688db; color: #fff; box-shadow: 0 12px 22px rgba(22,136,219,.23); }
 .ds-store-verify-button:not(:disabled):hover { background: #3e9fe4; }
 .ds-store-payment-help { color: #1682ca; }

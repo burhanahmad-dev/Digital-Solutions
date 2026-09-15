@@ -7,7 +7,7 @@ import { Resend } from "resend";
 
 interface Env {
   ASSETS: Fetcher;
-  IMAGES: {
+  IMAGES?: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
         output(options: { format: string; quality: number }): Promise<{ response(): Response }>;
@@ -63,6 +63,16 @@ function validatePayload(p: Partial<ContactPayload>): string | null {
   return null;
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;",
+  })[character] ?? character);
+}
+
 /** Handle POST /api/contact — save to DB and send email notification */
 async function handleContact(request: Request, env: Env): Promise<Response> {
   // Parse body
@@ -80,6 +90,15 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
   }
 
   const data = payload as ContactPayload;
+  const safe = {
+    name: escapeHtml(data.name.trim()),
+    email: escapeHtml(data.email.trim()),
+    phone: escapeHtml(data.phone.trim()),
+    company: escapeHtml(data.company.trim()),
+    service: escapeHtml(data.service.trim()),
+    subService: escapeHtml(data.subService.trim()),
+    message: escapeHtml(data.message.trim()),
+  };
 
   // Save to Aiven PostgreSQL
   try {
@@ -114,16 +133,16 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
           <p style="color:#666;margin-top:0;font-size:14px">Digital Solutions website</p>
           <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
           <table style="width:100%;border-collapse:collapse;font-size:15px">
-            <tr><td style="padding:8px 0;color:#6b7280;width:130px">Name</td><td style="padding:8px 0;font-weight:600">${data.name.trim()}</td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Email</td><td style="padding:8px 0"><a href="mailto:${data.email.trim()}">${data.email.trim()}</a></td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Phone</td><td style="padding:8px 0">${data.phone.trim()}</td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Company</td><td style="padding:8px 0">${data.company.trim()}</td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Service</td><td style="padding:8px 0">${data.service.trim()}</td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Focus Area</td><td style="padding:8px 0">${data.subService.trim()}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280;width:130px">Name</td><td style="padding:8px 0;font-weight:600">${safe.name}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Email</td><td style="padding:8px 0"><a href="mailto:${safe.email}">${safe.email}</a></td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Phone</td><td style="padding:8px 0">${safe.phone}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Company</td><td style="padding:8px 0">${safe.company}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Service</td><td style="padding:8px 0">${safe.service}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Focus Area</td><td style="padding:8px 0">${safe.subService}</td></tr>
           </table>
           <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
           <h3 style="color:#1a1a2e;font-size:15px;margin-bottom:8px">Project Details</h3>
-          <p style="color:#374151;line-height:1.6;white-space:pre-wrap">${data.message.trim()}</p>
+          <p style="color:#374151;line-height:1.6;white-space:pre-wrap">${safe.message}</p>
           <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
           <p style="font-size:12px;color:#9ca3af">Sent from Digital Solutions website — reply directly to reach the prospect.</p>
         </div>
@@ -147,13 +166,27 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    if (url.pathname === "/api/contact") {
+      if (request.method === "OPTIONS") return json(null, 204);
+      if (request.method === "POST") return handleContact(request, env);
+      return json({ success: false, error: "Method not allowed." }, 405);
+    }
+
     // Image optimization
     if (url.pathname === "/_vinext/image") {
+      const images = env.IMAGES;
+      if (!images) {
+        const source = url.searchParams.get("url");
+        if (source?.startsWith("/") && !source.startsWith("//")) {
+          return env.ASSETS.fetch(new Request(new URL(source, request.url)));
+        }
+        return json({ success: false, error: "Image optimization is unavailable." }, 503);
+      }
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
         fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
         transformImage: async (body, { width, format, quality }) => {
-          const result = await env.IMAGES.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
+          const result = await images.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
           return result.response();
         },
       }, allowedWidths);

@@ -3,6 +3,16 @@ import { createDb } from "@backend/worker/db/index";
 import { demoRequests } from "@backend/worker/db/schema";
 import { Resend } from "resend";
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;",
+  })[character] ?? character);
+}
+
 export async function POST(request: Request) {
   try {
     const payload = await request.json() as {
@@ -29,6 +39,16 @@ export async function POST(request: Request) {
 
     const db = createDb(dbUrl);
 
+    const safe = {
+      name: escapeHtml(payload.name.trim()),
+      email: escapeHtml(payload.email.trim()),
+      phone: escapeHtml(payload.phone?.trim() || ""),
+      company: escapeHtml(payload.company.trim()),
+      service: escapeHtml(payload.service?.trim() || ""),
+      subService: escapeHtml(payload.subService?.trim() || ""),
+      message: escapeHtml(payload.message.trim()),
+    };
+
     // Insert into Aiven DB
     await db.insert(demoRequests).values({
       name: payload.name.trim(),
@@ -54,13 +74,13 @@ export async function POST(request: Request) {
           html: `
             <div style="font-family:sans-serif;padding:24px">
               <h2>New Demo Request</h2>
-              <p><strong>Name:</strong> ${payload.name}</p>
-              <p><strong>Email:</strong> ${payload.email}</p>
-              <p><strong>Phone:</strong> ${payload.phone}</p>
-              <p><strong>Company:</strong> ${payload.company}</p>
-              <p><strong>Service:</strong> ${payload.service} - ${payload.subService}</p>
+              <p><strong>Name:</strong> ${safe.name}</p>
+              <p><strong>Email:</strong> ${safe.email}</p>
+              <p><strong>Phone:</strong> ${safe.phone}</p>
+              <p><strong>Company:</strong> ${safe.company}</p>
+              <p><strong>Service:</strong> ${safe.service} - ${safe.subService}</p>
               <h3>Project Details</h3>
-              <p>${payload.message}</p>
+              <p>${safe.message}</p>
             </div>
           `,
         });

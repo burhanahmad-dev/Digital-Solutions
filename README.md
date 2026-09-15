@@ -13,9 +13,12 @@ Next-compatible React, TypeScript, and Vinext.
 npm install
 npm run dev
 npm run build
+npm start
 ```
 
-This starter does not use `wrangler.jsonc`.
+`npm start` runs the production build through Wrangler's local Cloudflare runtime.
+This project uses the generated `dist/server/wrangler.json` rather than a root
+`wrangler.jsonc`.
 
 ## Project Structure
 
@@ -55,7 +58,21 @@ an external service is the simpler option.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
+- `npm start`: run the built Cloudflare Worker locally
 - `npm test`: build the site and verify its rendered HTML
+- `npm run test:cloudflare`: build and validate the Cloudflare upload bundle
+- `npm run deploy`: build and deploy the generated Worker bundle
+
+## Docker smoke test
+
+```bash
+docker build -t digital-solutions .
+docker run --rm -p 3000:3000 digital-solutions
+```
+
+The contact endpoint needs `DATABASE_URL`, `RESEND_API_KEY`, and `ADMIN_EMAIL`
+configured as Cloudflare secrets in production. Keep local values in `.dev.vars`;
+never bake them into the image.
 
 ## Learn More
 

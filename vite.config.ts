@@ -11,11 +11,10 @@ process.on("uncaughtException", (err: unknown) => {
   console.error(err);
 });
 
-import path from "node:path";
 import vinext from "vinext";
 import { defineConfig, type PluginOption } from "vite";
-import hostingConfig from "./.openai/hosting.json";
-import { sites } from "./build/sites-vite-plugin";
+import hostingConfig from "./.openai/hosting.json" with { type: "json" };
+import { sites } from "./build/sites-vite-plugin.ts";
 
 const { r2 } = hostingConfig;
 
@@ -25,6 +24,9 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const localBindingConfig = {
   main: "./backend/worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
+  assets: {
+    binding: "ASSETS",
+  },
   r2_buckets: r2
     ? [
         {
