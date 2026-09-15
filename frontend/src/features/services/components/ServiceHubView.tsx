@@ -12,7 +12,6 @@ export function ServiceHubView({ config }: { config: HubPageConfig }) {
     "marketing-seo": "/assets/images/services/menu-marketing-seo.jpg",
     development: "/assets/images/services/menu-development.jpg",
     design: "/assets/images/services/menu-design.jpg",
-    "software-tools": "/assets/images/home/hero-integrations.jpg",
   }[groupSlug] ?? "/assets/images/home/hero-workflow.jpg";
 
   return (

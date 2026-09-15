@@ -70,19 +70,6 @@ export const serviceMenuGroups: readonly ServiceGroup[] = [
       "Conversion Experience Design",
     ],
   },
-  {
-    id: "software-tools",
-    title: "Software & AI Tools",
-    eyebrow: "Curated access",
-    description: "Flexible access to essential AI, creative, and productivity tools with clear PKR pricing.",
-    image: "/assets/images/home/workflow-team.jpg",
-    imagePosition: "center center",
-    services: [
-      "ChatGPT Plus Plans",
-      "Claude AI Plans",
-      "Creator & Productivity Tools",
-    ],
-  },
 ] as const;
 
 /**
@@ -119,10 +106,6 @@ export const SERVICE_ITEM_ROUTES: Record<string, string> = {
   "Rapid Prototyping": "/services/design/rapid-prototyping",
   "Conversion Experience Design": "/services/design/conversion-experience-design",
 
-  // Software and AI tool plans
-  "ChatGPT Plus Plans": "/services/software-tools#chatgpt",
-  "Claude AI Plans": "/services/software-tools#claude",
-  "Creator & Productivity Tools": "/services/software-tools#other-tools",
 };
 
 /**
@@ -137,8 +120,7 @@ export function getServiceItemHref(serviceName: string, groupId: string): string
     groupId === "ai-automation" ||
     groupId === "marketing-seo" ||
     groupId === "development" ||
-    groupId === "design" ||
-    groupId === "software-tools"
+    groupId === "design"
   ) {
     return `/services/${groupId}`;
   }

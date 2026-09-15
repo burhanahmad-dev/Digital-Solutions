@@ -44,13 +44,13 @@ export function AgencyFooter() {
             </div>
 
             <div className="vx-footer-social-icons">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="vx-footer-social-btn" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/abdul-mannan-butt-0382a1379" target="_blank" rel="noopener noreferrer" className="vx-footer-social-btn" aria-label="LinkedIn">
                 <Linkedin size={16} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="vx-footer-social-btn" aria-label="Instagram">
+              <a href="https://www.instagram.com/dsolution555/" target="_blank" rel="noopener noreferrer" className="vx-footer-social-btn" aria-label="Instagram">
                 <Instagram size={16} />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="vx-footer-social-btn" aria-label="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61594256333150" target="_blank" rel="noopener noreferrer" className="vx-footer-social-btn" aria-label="Facebook">
                 <Facebook size={16} />
               </a>
               <a href="#top" className="vx-footer-social-btn" aria-label="Website">
@@ -112,14 +112,15 @@ export function AgencyFooter() {
         <div className="vx-footer-copyright-bar">
           <span>© {new Date().getFullYear()} Digital Solutions. All rights reserved.</span>
           <div className="vx-footer-legal-links">
-            <a href="#privacy">Privacy Policy</a>
-            <a href="#terms">Terms of Service</a>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/terms-of-service">Terms of Service</Link>
             <a href="#top" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
               Back to top <ArrowUpRight size={13} />
             </a>
           </div>
         </div>
       </div>
+
     </footer>
   );
 }

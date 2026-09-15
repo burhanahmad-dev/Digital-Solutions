@@ -330,7 +330,9 @@ export default function HomePage() {
     };
   }, [searchOpen]);
 
-  const activeMenuGroup = serviceMenuGroups[activeServiceGroup];
+  // Keep the mega menu stable during hot reloads or if a service category is removed.
+  const activeMenuGroup = serviceMenuGroups[activeServiceGroup] ?? serviceMenuGroups[0];
+  const activeMenuGroupIndex = serviceMenuGroups.indexOf(activeMenuGroup);
   const normalizedSearch = searchQuery.trim().toLocaleLowerCase();
   const searchResults = siteSearchItems.filter((item) => {
     if (!normalizedSearch) return item.featured;
@@ -591,7 +593,7 @@ export default function HomePage() {
                   <div className="vx-mega-preview-images" aria-hidden="true">
                     {serviceMenuGroups.map((group, index) => (
                       <img
-                        className={index === activeServiceGroup ? "is-active" : ""}
+                        className={index === activeMenuGroupIndex ? "is-active" : ""}
                         src={group.image}
                         alt=""
                         style={{ objectPosition: group.imagePosition }}
@@ -616,7 +618,7 @@ export default function HomePage() {
                   <div className="vx-mega-groups">
                     {serviceMenuGroups.map((group, groupIndex) => (
                       <section
-                        className={`vx-mega-group${groupIndex === activeServiceGroup ? " is-active" : ""}`}
+                        className={`vx-mega-group${groupIndex === activeMenuGroupIndex ? " is-active" : ""}`}
                         key={group.id}
                         onPointerEnter={() => setActiveServiceGroup(groupIndex)}
                         onFocusCapture={() => setActiveServiceGroup(groupIndex)}
