@@ -29,7 +29,6 @@ export function ServicePageHeader({
           </Link>
           <Link href="/" aria-label="Home"><Home size={14} /> Home</Link>
           <Link href="/#services">Services</Link>
-          <Link href="/blog">Insights</Link>
         </nav>
 
         <div>
@@ -53,7 +52,6 @@ export function ServicePageHeader({
           <Link href={backHref} onClick={() => setMenuOpen(false)}>{backLabel}</Link>
           <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link href="/#services" onClick={() => setMenuOpen(false)}>Services</Link>
-          <Link href="/blog" onClick={() => setMenuOpen(false)}>Insights</Link>
           <Link href="/book-a-demo" onClick={() => setMenuOpen(false)}>Book a call</Link>
         </nav>
       )}

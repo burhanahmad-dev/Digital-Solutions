@@ -30,3 +30,18 @@ export const softwareTools: readonly SoftwareTool[] = [
 ];
 
 export const toolCategories: readonly ("All" | ToolCategory)[] = ["All", "AI", "Design", "Development", "Productivity"];
+
+export const toolLogoSources: Record<string, string> = {
+  openai: "/assets/logos/tools/openai.svg",
+  anthropic: "/assets/logos/tools/anthropic.svg",
+  googlegemini: "/assets/logos/tools/googlegemini.svg",
+  canva: "/assets/logos/tools/canva.svg",
+  capcut: "/assets/logos/tools/capcut.png",
+  figma: "/assets/logos/tools/figma.svg",
+  cursor: "/assets/logos/tools/cursor.svg",
+  github: "/assets/logos/tools/github.svg",
+  notion: "/assets/logos/tools/notion.svg",
+  grammarly: "/assets/logos/tools/grammarly.svg",
+  perplexity: "/assets/logos/tools/perplexity.svg",
+  microsoft365: "/assets/logos/tools/microsoft365.svg",
+};

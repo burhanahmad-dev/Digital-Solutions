@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Check, Mail, MessageCircle, Upload, Wallet } from "lucide-react";
 import { AgencyFooter } from "@/src/components/layout/AgencyFooter";
+import { claimMailSendPermission } from "@/src/lib/mailRateLimit";
 import { ServicePageHeader } from "./ServicePageHeader";
 
-const ADMIN_EMAIL = "hello@digitalsolutions.ai";
+const ADMIN_EMAIL = "dsolutions555@gmail.com";
 const WHATSAPP_CONTACTS = [
   { name: "Abdul Mannan Butt", number: "923096548143" },
   { name: "Burhan Ahmed", number: "923328113888" },
@@ -39,8 +41,6 @@ type Order = {
   price: string;
 };
 
-const emptyOrder: Order = { category: "", product: "", plan: "", price: "" };
-
 function buildMessage(order: Order, paymentMethod: PaymentMethod | "", name: string, phone: string, email: string) {
   const methodName = (paymentMethods.find((method) => method.id === paymentMethod)?.name ?? paymentMethod) || "Not selected";
   return [
@@ -59,23 +59,19 @@ function buildMessage(order: Order, paymentMethod: PaymentMethod | "", name: str
 }
 
 export default function SoftwareCheckoutPage() {
-  const [order, setOrder] = useState<Order>(emptyOrder);
+  const searchParams = useSearchParams();
+  const order = useMemo<Order>(() => ({
+    category: searchParams.get("category") ?? "",
+    product: searchParams.get("product") ?? "",
+    plan: searchParams.get("plan") ?? "",
+    price: searchParams.get("price") ?? "",
+  }), [searchParams]);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | "">("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [status, setStatus] = useState("");
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setOrder({
-      category: params.get("category") ?? "",
-      product: params.get("product") ?? "",
-      plan: params.get("plan") ?? "",
-      price: params.get("price") ?? "",
-    });
-  }, []);
 
   const message = useMemo(
     () => buildMessage(order, paymentMethod, name.trim(), phone.trim(), email.trim()),
@@ -100,7 +96,7 @@ export default function SoftwareCheckoutPage() {
       return;
     }
 
-    if (!proofFile.type.startsWith("image/") || proofFile.size > 10 * 1024 * 1024) {
+    if (!proofFile || !proofFile.type.startsWith("image/") || proofFile.size > 10 * 1024 * 1024) {
       setStatus("Please upload a valid PNG, JPG, or WebP screenshot under 10 MB.");
       return;
     }
@@ -115,11 +111,11 @@ export default function SoftwareCheckoutPage() {
     const shareData: ShareData = {
       title: `Payment proof — ${order.product || "Software tool"}`,
       text: message,
-      files: [proofFile],
+      files: [proofFile as File],
     };
 
     try {
-      if (navigator.share && navigator.canShare?.({ files: [proofFile] })) {
+      if (navigator.share && navigator.canShare?.({ files: [proofFile as File] })) {
         await navigator.share(shareData);
         setStatus("Your payment proof was shared. We’ll verify it and send access details by email.");
         return;
@@ -128,7 +124,13 @@ export default function SoftwareCheckoutPage() {
       if (error instanceof DOMException && error.name === "AbortError") return;
     }
 
-    window.location.href = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(`Payment proof — ${order.product || "Software tool"}`)}&body=${encodeURIComponent(`${message}\n\nPlease attach your payment screenshot before sending.`)}`;
+    const permission = claimMailSendPermission();
+    if (!permission.allowed) {
+      setStatus(permission.message);
+      return;
+    }
+
+    window.location.assign(`mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(`Payment proof — ${order.product || "Software tool"}`)}&body=${encodeURIComponent(`${message}\n\nPlease attach your payment screenshot before sending.`)}`);
     setStatus("Your email app is opening. Please attach the screenshot before sending.");
   };
 

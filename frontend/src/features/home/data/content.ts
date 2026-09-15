@@ -9,11 +9,7 @@ export const heroImages = [
     alt: "Professional working on a laptop in a modern office",
     position: "56% center",
   },
-  {
-    src: "/assets/images/home/hero-agents.jpg",
-    alt: "Software professional working at a computer",
-    position: "65% center",
-  },
+
   {
     src: "/assets/images/home/hero-process.jpg",
     alt: "Professional working inside a modern glass office",

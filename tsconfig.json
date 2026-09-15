@@ -13,8 +13,10 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "types": ["@cloudflare/workers-types"],
     "paths": {
-      "@/*": ["./frontend/*"]
+      "@/*": ["./frontend/*"],
+      "@backend/*": ["./backend/*"]
     }
   },
   "include": [
@@ -25,5 +27,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "src-legacy"]
+  "exclude": ["node_modules"]
 }
