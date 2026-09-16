@@ -368,3 +368,67 @@
 .ds-store-cancel-confirm span { color: #23435f; }
 .ds-store-cancel-confirm p { color: #718398; }
 .ds-store-cancel-confirm button { border-color: #d8e4ee; background: #fff; color: #384f64; }
+
+/* Phone storefront: compact catalog, unobtrusive actions and a full-height checkout sheet. */
+@media (max-width: 600px) {
+  .ds-store-page { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .ds-store-shell { width: min(100% - 24px, 1180px); }
+  .ds-store-catalog { padding: 54px 0 64px; }
+  .ds-store-catalog-heading h2 { font-size: clamp(34px, 11vw, 44px); }
+  .ds-store-catalog-heading > p { font-size: 13px; line-height: 1.55; }
+  .ds-store-filter-bar { margin-top: 24px; padding: 7px; }
+  .ds-store-search { height: 48px; min-height: 48px; max-height: 48px; }
+  .ds-store-search input { min-width: 0; font-size: 16px; }
+  .ds-store-category-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ds-store-category-tabs button { min-height: 44px; }
+  .ds-store-results { margin-block: 17px; }
+  .ds-store-grid { gap: 14px; }
+  .ds-store-product-card { padding: 18px; border-radius: 17px; }
+  .ds-store-logo { width: 48px; height: 48px; border-radius: 14px; }
+  .ds-store-product-copy { margin-top: 18px; }
+  .ds-store-product-copy h3 { font-size: 22px; }
+  .ds-store-price-row button { width: 46px; height: 46px; }
+  .ds-store-assurance-grid { border-radius: 17px; }
+
+  .ds-store-cart-fab,
+  .ds-store-whatsapp { width: 50px; height: 50px; bottom: calc(14px + env(safe-area-inset-bottom)); }
+  .ds-store-cart-fab { right: 72px; }
+  .ds-store-whatsapp { right: 14px; }
+
+  .ds-store-cart { width: 100%; max-width: 100%; border-radius: 22px 22px 0 0; }
+  .ds-store-cart-line { grid-template-columns: 42px minmax(0, 1fr); }
+  .ds-store-quantity { grid-column: 2; width: fit-content; }
+  .ds-store-quantity button { width: 44px; height: 44px; }
+  .ds-store-cart-total { margin-inline: 18px; }
+  .ds-store-checkout-button { width: calc(100% - 36px); margin-inline: 18px; }
+  .ds-store-cart-note { padding-inline: 18px; }
+
+  .ds-store-checkout-overlay { align-items: start; padding: 0; }
+  .ds-store-checkout { width: 100%; min-height: 100dvh; border-width: 0; border-radius: 0; }
+  .ds-store-checkout-close { top: 14px; right: 14px; width: 44px; height: 44px; }
+  .ds-store-checkout-intro { padding: 24px 18px 22px; }
+  .ds-store-checkout-icon { width: 44px; height: 44px; }
+  .ds-store-checkout-intro > p { margin-top: 22px; }
+  .ds-store-checkout-intro h2 { max-width: 240px; font-size: 34px; }
+  .ds-store-checkout-reference { margin-top: 8px; }
+  .ds-store-timer { margin-top: 18px; padding: 14px; }
+  .ds-store-checkout-details { padding: 24px 16px calc(26px + env(safe-area-inset-bottom)); }
+  .ds-store-checkout-topline { align-items: end; gap: 10px; }
+  .ds-store-payment-methods label { min-height: 64px; padding-inline: 11px; }
+  .ds-store-account-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .ds-store-account > div:not(.ds-store-account-heading) { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .ds-store-account-number { overflow-wrap: anywhere; }
+  .ds-store-upload { min-height: 56px; }
+  .ds-store-upload small { display: none; }
+  .ds-store-verify-button { min-height: 52px; }
+  .ds-store-payment-help { min-height: 44px; text-align: center; }
+  .ds-store-cancel-order { min-height: 44px; padding-inline: 16px; }
+  .ds-store-cancel-confirm button { min-height: 46px; }
+}
+
+@media (max-width: 350px) {
+  .ds-store-product-card { padding: 16px; }
+  .ds-store-price-row { gap: 8px; }
+  .ds-store-price-row strong { font-size: 22px; }
+  .ds-store-checkout-topline { align-items: flex-start; flex-direction: column; }
+}

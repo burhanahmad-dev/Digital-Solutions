@@ -58,3 +58,19 @@
 .ds-checkout-help { margin: 16px 0 0; color: #8aa0b4; font-size: 11px; line-height: 1.6; }
 @media (max-width: 900px) { .ds-checkout-layout { grid-template-columns: 1fr; gap: 55px; } .ds-checkout-copy > p { max-width: 680px; } .ds-checkout-order-card { max-width: none; } }
 @media (max-width: 560px) { .ds-checkout-main { width: min(100% - 32px, 1180px); padding-top: 125px; } .ds-checkout-form-card { padding: 22px 18px; } .ds-checkout-fields, .ds-proof-actions { grid-template-columns: 1fr; } .ds-checkout-copy h1 { font-size: clamp(50px, 16vw, 70px); } }
+
+@media (max-width: 560px) {
+  .ds-checkout-main { width: min(100% - 28px, 1180px); padding: 112px 0 70px; }
+  .ds-checkout-back-row { margin-bottom: 30px; }
+  .ds-checkout-back-row a { min-height: 44px; }
+  .ds-checkout-layout { gap: 42px; }
+  .ds-checkout-copy h1 { font-size: clamp(40px, 13vw, 58px); overflow-wrap: anywhere; }
+  .ds-checkout-copy > p { font-size: 15px; line-height: 1.6; }
+  .ds-checkout-order-card { margin-top: 34px; padding: 18px; }
+  .ds-checkout-steps { margin-top: 38px; }
+  .ds-checkout-form-card { padding: 22px 16px; border-radius: 16px; }
+  .ds-payment-option { min-height: 64px; }
+  .ds-checkout-fields input { min-height: 48px; font-size: 16px; }
+  .ds-proof-upload { min-height: 120px; }
+  .ds-proof-actions button { min-height: 48px; }
+}

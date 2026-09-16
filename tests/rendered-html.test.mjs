@@ -89,6 +89,9 @@ test("server-renders every public page and service detail route", async () => {
 });
 
 test("contact API rejects malformed requests before external services", async () => {
+  const optionsResponse = await request("/api/contact", { method: "OPTIONS" });
+  assert.equal(optionsResponse.status, 204);
+
   const getResponse = await request("/api/contact", { method: "GET" });
   assert.equal(getResponse.status, 405);
 

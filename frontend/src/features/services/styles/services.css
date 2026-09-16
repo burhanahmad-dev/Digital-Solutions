@@ -140,3 +140,44 @@
   .ds-service-header-cta, .ds-service-primary, .ds-service-secondary, .ds-service-hub-card, .ds-service-hub-card-link, .ds-service-tech-grid span, .ds-service-modal-backdrop, .ds-service-modal, .ds-service-step, .ds-service-deliverable, .ds-service-hub-section, .ds-service-cta, .ds-service-hub-hero-inner, .ds-service-detail-hero-inner { transition: none; animation: none; }
   .ds-motion-ready [data-service-reveal] { opacity: 1; transform: none; }
 }
+
+/* Phone-specific spacing and touch ergonomics shared by every service page. */
+@media (max-width: 560px) {
+  .ds-service-header-wrap { padding-inline: 10px; }
+  .ds-service-header { min-height: 58px; padding: 6px 7px 6px 13px; }
+  .ds-service-header .vx-brand-logo { width: auto; max-width: 142px; }
+  .ds-service-menu-toggle { width: 44px; height: 44px; }
+  .ds-service-mobile-nav { max-height: calc(100dvh - 86px); overflow-y: auto; border-radius: 18px; }
+  .ds-service-mobile-nav a { display: flex; min-height: 44px; align-items: center; }
+
+  .ds-service-hub-hero,
+  .ds-service-detail-hero { min-height: 660px; }
+
+  .ds-service-hub-hero-inner,
+  .ds-service-detail-hero-inner { width: min(100% - 28px, 1180px); padding-top: 176px; }
+  .ds-service-detail-hero-inner { padding-top: 164px; padding-bottom: 48px; }
+  .ds-service-hub-hero h1,
+  .ds-service-detail-hero h1 { font-size: clamp(39px, 12.8vw, 58px); overflow-wrap: anywhere; }
+  .ds-service-hub-hero p { font-size: 16px; line-height: 1.58; }
+  .ds-service-hero-lede { font-size: 20px; }
+  .ds-service-hero-description { font-size: 14px; line-height: 1.6; }
+  .ds-service-actions { display: grid; grid-template-columns: 1fr; }
+  .ds-service-primary,
+  .ds-service-secondary { min-height: 50px; justify-content: center; }
+  .ds-service-hero-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ds-service-hero-stat { min-width: 0; margin-right: 0; padding-right: 12px; }
+
+  .ds-service-section,
+  .ds-service-cta { width: min(100% - 28px, 1180px); }
+  .ds-service-section { padding-block: 54px; }
+  .ds-service-hub-section,
+  .ds-service-section--wide { padding: 54px 14px; }
+  .ds-service-section-heading { margin-bottom: 30px; }
+  .ds-service-hub-card { min-height: 230px; }
+  .ds-service-deliverable { min-height: auto; }
+  .ds-service-modal-backdrop { align-items: end; padding: 10px; }
+  .ds-service-modal { max-height: calc(100dvh - 20px); overflow-y: auto; padding: 24px 20px; border-radius: 18px; }
+  .ds-service-modal-close { width: 44px; height: 44px; }
+  .ds-service-cta { margin-bottom: 54px; padding: 28px 20px; border-radius: 18px; }
+  .ds-service-cta .ds-service-primary { width: 100%; }
+}

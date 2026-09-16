@@ -234,3 +234,17 @@
   .ds-booking-intro,
   .ds-booking-form-section { animation: none; }
 }
+
+@media (max-width: 560px) {
+  .ds-booking-main { width: min(100% - 28px, 1180px); padding-top: 124px; }
+  .ds-booking-intro h1 { font-size: clamp(39px, 12.8vw, 56px); overflow-wrap: anywhere; }
+  .ds-booking-intro > p { font-size: 16px; line-height: 1.6; }
+  .ds-booking-contact-note { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .ds-booking-contact-note a { display: flex; min-height: 36px; align-items: center; overflow-wrap: anywhere; }
+  .ds-booking-form-section { gap: 30px; margin-top: 62px; padding-top: 34px; }
+  .ds-booking-form { gap: 18px; padding: 22px 16px; border-radius: 14px; }
+  .ds-booking-form input,
+  .ds-booking-form select,
+  .ds-booking-form textarea { min-height: 48px; font-size: 16px; }
+  .ds-booking-submit { width: 100%; min-height: 50px; justify-content: center; }
+}

@@ -40,7 +40,7 @@ interface ContactPayload {
 
 /** Simple JSON response helper */
 function json(data: unknown, status = 200): Response {
-  return new Response(JSON.stringify(data), {
+  return new Response(status === 204 ? null : JSON.stringify(data), {
     status,
     headers: {
       "Content-Type": "application/json",
